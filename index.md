@@ -1,4 +1,4 @@
-## Project Name Unknown
+# Project Name Unknown
 
 [State-Of-The-Art](https://xrylak.github.io/CS639-Project/State-Of-The-Art)
 
@@ -97,5 +97,5 @@
 
 
 
-# Contributors
+### Contributors
 Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu), Casey Frank (csfrank3@wisc.edu)
