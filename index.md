@@ -1,7 +1,7 @@
 # Traffic Livestream Analysis
 Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu), 
 Casey Frank (csfrank3@wisc.edu)
-## Problem
+### Problem
 In terms of traffic, connectivity is costly. As cars overburden the streets of the US, our world
 becomes increasingly congested. Especially in larger cities, where around 90% of daily
 commuters use private vehicles, policymakers struggle to find tenable solutions (2). One
@@ -24,7 +24,7 @@ of pollutants (3). Additional broad reasons include environmental impact and ove
 For all these reasons and more, it’s clear that striking a blow at the problem of rush hours would
 be greatly beneficial, both on a personal and societal level. Our project aims to provide a step in
 this direction.
-## Proposed Solution
+### Proposed Solution
 The solution to lessening the negative productivity and environmental impact of rush hour traffic
 involves gathering data about where it occurs and its severity. Thus drivers can be better
 informed about where to drive and at what hours of the day. Our proposed solution involves an
@@ -43,7 +43,7 @@ accordingly. After successfully implementing this algorithm, we plan on attachin
 live streams and running it over the course of many days to gather enough data to do analysis.
 With this data, we can produce metrics such as traffic speed vs. time at a certain location and
 heat maps of traffic over time.
-## Applications/Analysis
+### Applications/Analysis
 Numerous applications can be made of the solution provided. One such application might be
 identifying outliers in the data, such as people moving at a significantly different speed
 compared to the rest of the traffic. This could potentially help law enforcement catch problematic
@@ -52,7 +52,7 @@ numerous roads indicating the congestion hotspots this solution would also benef
 design plans by identifying problematic designs which do not work. Another unique application
 would be detecting congestion at drive-throughs which will help people decide if they truly want
 to go to a particular restaurant.
-## Timeline
+### Timeline
 ● Mid/Late October: Recognize car from video
 ● Start November: Accurately calculate velocity of moving vehicles
 ● Mid November: Apply recognition to livestream(s) and begin data collection
@@ -62,103 +62,3 @@ to go to a particular restaurant.
 1: https://www.theatlantic.com/sponsored/hitachi-building-tomorrow/global-rush-hour/237/
 2: https://www.brookings.edu/research/traffic-why-its-getting-worse-what-government-can-do/
 3: https://www.triplepundit.com/story/2017/health-impacts-rush-hour-pollution/16231
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Contributors
-Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu), Casey Frank (csfrank3@wisc.edu)
