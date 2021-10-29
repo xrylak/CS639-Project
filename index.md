@@ -1,4 +1,6 @@
 # Traffic Livestream Analysis
+Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu),
+Casey Frank (csfrank3@wisc.edu)
 ## Problem
 In terms of traffic, connectivity is costly. As cars overburden the streets of the US, our world
 becomes increasingly congested. Especially in larger cities, where around 90% of daily
@@ -50,7 +52,7 @@ numerous roads indicating the congestion hotspots this solution would also benef
 design plans by identifying problematic designs which do not work. Another unique application
 would be detecting congestion at drive-throughs which will help people decide if they truly want
 to go to a particular restaurant.
-##Timeline
+## Timeline
 ● Mid/Late October: Recognize car from video
 ● Start November: Accurately calculate velocity of moving vehicles
 ● Mid November: Apply recognition to livestream(s) and begin data collection
