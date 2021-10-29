@@ -53,11 +53,11 @@ design plans by identifying problematic designs which do not work. Another uniqu
 would be detecting congestion at drive-throughs which will help people decide if they truly want
 to go to a particular restaurant.
 ### Timeline
-● Mid/Late October: Recognize car from video
-● Start November: Accurately calculate velocity of moving vehicles
-● Mid November: Apply recognition to livestream(s) and begin data collection
-● Late November: Build analysis tools / apply gathered data
-● December: Produce finished demo and analysis of all collected data
+* Mid/Late October: Recognize car from video
+* Start November: Accurately calculate velocity of moving vehicles
+* Mid November: Apply recognition to livestream(s) and begin data collection
+* Late November: Build analysis tools / apply gathered data
+* December: Produce finished demo and analysis of all collected data
 ### Sources
 1. https://www.theatlantic.com/sponsored/hitachi-building-tomorrow/global-rush-hour/237/
 2. https://www.brookings.edu/research/traffic-why-its-getting-worse-what-government-can-do/
