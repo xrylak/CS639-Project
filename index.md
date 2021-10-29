@@ -59,6 +59,6 @@ to go to a particular restaurant.
 ● Late November: Build analysis tools / apply gathered data
 ● December: Produce finished demo and analysis of all collected data
 ### Sources
-1: https://www.theatlantic.com/sponsored/hitachi-building-tomorrow/global-rush-hour/237/
-2: https://www.brookings.edu/research/traffic-why-its-getting-worse-what-government-can-do/
-3: https://www.triplepundit.com/story/2017/health-impacts-rush-hour-pollution/16231
+1. https://www.theatlantic.com/sponsored/hitachi-building-tomorrow/global-rush-hour/237/
+2. https://www.brookings.edu/research/traffic-why-its-getting-worse-what-government-can-do/
+3. https://www.triplepundit.com/story/2017/health-impacts-rush-hour-pollution/16231
