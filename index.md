@@ -1,5 +1,5 @@
 # Traffic Livestream Analysis
-**Contributers:** Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu),
+**Contributors:** Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu),
 Casey Frank (csfrank3@wisc.edu)
 ## Problem
 In terms of traffic, connectivity is costly. As cars overburden the streets of the US, our world
