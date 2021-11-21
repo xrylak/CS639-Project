@@ -99,7 +99,7 @@ proFrames = [] # processed frames
 index = -1 # start at -1 since will be incremented before used
 frameDir = '/'
 detectionLine = (0, 80),(1000,80) # used to validate contours of interest, may change depending on image
-fps = 14.0
+fps = 30.0
 vehicleCounts = []
 vPerSec = 0 # vehicles per second
 frameCount = 1 # number of frames processed
@@ -129,7 +129,7 @@ while(capture.isOpened()):
             diffContours[frameCount % 2] = validContours
             speed = 0
             if (diffContours[0] != None):
-                speed = calculateSpeed(diffContours)
+                speed = calculateSpeed(diffContours) * fps
                 speedSum += speed
 
 
@@ -161,6 +161,8 @@ while(capture.isOpened()):
                 vPerSec = sum(vehicleCounts) / frameCount
                 currSpeed = speed
                 avgSpeed = speedSum / frameCount
+                
+
 
             cv2.putText(processedFrame, "vehicles detected: " + str(len(validContours)), (20, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             cv2.putText(processedFrame, "vehicles/second: " + str(vPerSec), (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
