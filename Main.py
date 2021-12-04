@@ -47,6 +47,39 @@ def getValidContours (contours, detectionLine, dContours):
                     break
             '''
             validContours.append(cntr)
+
+    #Next iterate through contours to make sure none are inside of eachother
+    validContoursCopy = validContours.copy()
+    for i in range(len(validContours)):
+        for j in range(i + 1,len(validContours)):
+            contourArea1 = cv2.contourArea(validContours[i])
+            x1,y1,w1,h1 = cv2.boundingRect(validContours[i])
+            contourArea2 = cv2.contourArea(validContours[j])
+            x2,y2,w2,h2 = cv2.boundingRect(validContours[j])
+            sumSq = ( abs(x1 - x2)  ^ 2 ) + ( abs(y1 - y2) ^ 2)
+            distance = math.sqrt(sumSq)
+            
+            # determine if contour 1 is within contour 2
+            if ((x1 > x2) & (x1+w1 < x2+w2) & (y1 + h1 < y2 + h2) & (y1 > y2)):
+                # remove it
+                index = 0
+                for cntr in validContoursCopy:
+                    if (validContours[i] is cntr):
+                        validContoursCopy.pop(index)
+                        break
+                    index += 1
+            # determine if contour 2 is within contour 1
+            elif ((x2 > x1) & (x2+w2 < x1+w1) & (y2 + h2 < y1 + h1) & (y2 > y1)):
+                index = 0
+                for cntr in validContoursCopy:
+                    if (validContours[j] is cntr):
+                        validContoursCopy.pop(index)
+                        break
+                    index += 1
+#cv2.matchShapes(cnt1,cnt2,cv2.cv.CV_CONTOURS_MATCH_I1, 0.0)
+    
+    validContours = validContoursCopy
+    
     return validContours        
 
 '''
