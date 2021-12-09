@@ -2,49 +2,19 @@
 Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu), 
 Casey Frank (csfrank3@wisc.edu)
 ### Problem
-In terms of traffic, connectivity is costly. As cars overburden the streets of the US, our world
-becomes increasingly congested. Especially in larger cities, where around 90% of daily
-commuters use private vehicles, policymakers struggle to find tenable solutions (2). One
-commonly utilized option is physically expanding the capacity of roads, but urban planners are
-often hard-pressed in finding locations in which to allocate valuable resources into roads, but
-the construction required is often unrealistically costly in terms of both resources and money.
-Additionally, these massive roads would be grossly unnecessary during non-peak traffic hours,
-and once word got around that the road had expanded, people would flood in, and congestion
-would re-appear. This dilemma hints at the true problem, of which congestion is only a
-symptom. The true problem is the fact that the majority of people commute using specific roads
-at specific times of the day, colloquially known as “rush hours”.
-Why it needs to be solved
-There are multiple reasons why solving the problem of rush hours would help our society. One
-easily identifiable one is gas. For example, take New York, where during rush hour traffic,
-commutes are increased by an average of 27 minutes. Factor in the number of people
-commuting and average amount of fuel consumption per car, and you get about 12.5 billion
-dollars of wasted fuel every single day (1). Another reason is personal health. Recent studies
-have shown that during rush hours, the interiors of cars can become filled with dangerous levels
-of pollutants (3). Additional broad reasons include environmental impact and overall productivity.
-For all these reasons and more, it’s clear that striking a blow at the problem of rush hours would
-be greatly beneficial, both on a personal and societal level. Our project aims to provide a step in
-this direction.
+  In terms of traffic, connectivity is costly. As cars overburden the streets of the US, our world becomes increasingly congested. Especially in larger cities, where around 90% of daily commuters use private vehicles, policymakers struggle to find tenable solutions (2). One commonly utilized option is physically expanding the capacity of roads, but urban planners are often hard-pressed in finding locations in which to allocate valuable resources into roads, but the construction required is often unrealistically costly in terms of both resources and money. Additionally, these massive roads would be grossly unnecessary during non-peak traffic hours, and once word got around that the road had expanded, people would flood in, and congestion would re-appear. This dilemma hints at the true problem, of which congestion is only a symptom. The true problem is the fact that the majority of people commute using specific roads at specific times of the day, colloquially known as “rush hours”.
+### Why It Needs to be Solved
+  There are multiple reasons why solving the problem of rush hours would help our society. One easily identifiable one is gas. For example, take New York, where during rush hour traffic, commutes are increased by an average of 27 minutes. Factor in the number of people commuting and average amount of fuel consumption per car, and you get about 12.5 billion dollars of wasted fuel every single day (1). Another reason is personal health. Recent studies have shown that during rush hours, the interiors of cars can become filled with dangerous levels of pollutants (3). Additional broad reasons include environmental impact and overall productivity. For all these reasons and more, it’s clear that striking a blow at the problem of rush hours would be greatly beneficial, both on a personal and societal level. Our project aims to provide a step in this direction.
 ### Proposed Solution
-The solution to lessening the negative productivity and environmental impact of rush hour traffic
-involves gathering data about where it occurs and its severity. Thus drivers can be better
-informed about where to drive and at what hours of the day. Our proposed solution involves an
-algorithm that, given the input of a live stream video of a stretch of road, outputs the
-location/bounding boxes of vehicles on this road and their projected velocities in order to gauge
-traffic speed. Choices arise in how best to detect these vehicles: either through image filtering
-and motion-detecting techniques or a deep learning model trained to detect vehicles. We will try
-both approaches, comparing each on detection accuracy and speed, and continue down the
-most promising route. As our video will be fed in from a live stream, accurate predictions must
-also be quick to compute. We will also have to determine a way to find accurate speeds of the
-vehicles regardless of camera angle. A potential solution to this problem might be deducing
-scene geometry from parallel road lines and extrapolating relative car position and thus velocity
-from the movement in position. From this extracted data we can build useful traffic tools to help
-individuals or cities analyze traffic patterns and plan their routes or infrastructure changes
-accordingly. After successfully implementing this algorithm, we plan on attaching it to multiple
-live streams and running it over the course of many days to gather enough data to do analysis.
-With this data, we can produce metrics such as traffic speed vs. time at a certain location and
-heat maps of traffic over time.
+  Our proposed solution involves an algorithm that, given the input of a video of a stretch of road, outputs the location/bounding boxes of vehicles on this road and their projected velocities in order to gauge traffic speed. The velocities will be measured in terms of pixels per second which could hopefully be converted to real world measurements easily if need be. Determining the relative speeds of cars in the video may help determine traffic flow patterns if compared among large datasets. Other data that we might display includes cars per a certain amount of time which may help determine road congestion, and a line which dictates the most common direction the cars are heading. Being able to detect direction would greatly benefit identifying traffic flow patterns, especially at particular times of the day. Lastly, we will attach our algorithm to livestream video and generate analysis of traffic flow over time.
+### Method
+  For this project we will be using Python and openCV. Our method involves taking in an image source and processing it through a series of steps.  The first step is frame differencing, which is essentially what it sounds like. That is, finding the difference in pixel values between two consecutive frames which correspond to a moving object.  The second step is thresholding, which involves assigning a 1 to values above the threshold in the frame differenced image, and 0 to values below the threshold.  This helps weed out some of the unwanted noise in the image.  The third step is finding the contours and dilating them.  Contours help identify regions in an image having the same intensity or color, while dilation, done via convolution with a kernel, helps connect any contours which are close enough to be considered a single one by expanding their area.  
+  The fourth step involves more weeding out of unwanted contours. Contours which are too small compared to a threshold are removed and a line is also drawn across the image to remove any cars which are not beneath it.  The area beneath the line is the region of interest.  This filtering method may be removed since it varies greatly between images.  More filtering methods may be added in the future.  Following this comes the data representation where velocities, direction, bounding boxes, and cars per duration of time is calculated and displayed on the processed frame.  Finally, the frame is saved and this algorithm continues until each frame has been processed.  The processed frames are then converted to a mp4 video and saved for viewing.
+  Much of this algorithm is based on the article from Analytics Vidhya on vehicle recognition with openCV (reference 4).
+## Revisions
+  Originally the project was going to deal with multiple live streams of traffic feed on a large scale but has been skimmed down to just working with individual videos/live streams with a focus on gathering information from individual traffic videos and displaying the information in an output video.  If time allows, we will implement a way to capture data from a livestream over hour/day long periods and extract traffic data, such as traffic density over time. Some of the complicated data analysis methods mentioned before such as determining actual car velocities have been removed. The timeline has also been updated to be in agreement with the new changes and current progress.
 ### Applications/Analysis
-Numerous applications can be made of the solution provided. One such application might be
+  Numerous applications can be made of the solution provided. One such application might be
 identifying outliers in the data, such as people moving at a significantly different speed
 compared to the rest of the traffic. This could potentially help law enforcement catch problematic
 drivers and determine which locations they are most populated in. If a heat map were made of
@@ -52,13 +22,8 @@ numerous roads indicating the congestion hotspots this solution would also benef
 design plans by identifying problematic designs which do not work. Another unique application
 would be detecting congestion at drive-throughs which will help people decide if they truly want
 to go to a particular restaurant.
-### Timeline
-* Mid/Late October: Recognize car from video
-* Start November: Accurately calculate velocity of moving vehicles
-* Mid November: Apply recognition to livestream(s) and begin data collection
-* Late November: Build analysis tools / apply gathered data
-* December: Produce finished demo and analysis of all collected data
 ### Sources
 1. https://www.theatlantic.com/sponsored/hitachi-building-tomorrow/global-rush-hour/237/
 2. https://www.brookings.edu/research/traffic-why-its-getting-worse-what-government-can-do/
 3. https://www.triplepundit.com/story/2017/health-impacts-rush-hour-pollution/16231
+4. https://www.analyticsvidhya.com/blog/2020/04/vehicle-detection-opencv-python/
