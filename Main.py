@@ -3,6 +3,7 @@ import re
 import cv2 # opencv library
 import numpy as np
 import math
+import copy
 from os.path import isfile, join
 import matplotlib.pyplot as plt
 
@@ -27,25 +28,21 @@ def getContours(image1, image2):
     dilated = cv2.dilate(thresh,kernel,iterations = 1)
         
     # find contours
-    contours, hierarchy = cv2.findContours(dilated.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    image, contours, hierarchy = cv2.findContours(dilated.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     return contours
 
 '''
 Method which cuts out the contours that do not appear in the detection area
 TODO maybe pass in contour area instead? May need to change depending on image
 '''
-def getValidContours (contours, detectionLine, dContours):
+def getValidContours (contours, detectionLine):
     validContours = []
     for cntr in contours:
         x,y,w,h = cv2.boundingRect(cntr)
         if (x <= detectionLine[1][0] - 40) & (y >= detectionLine[1][1]) & (cv2.contourArea(cntr) >= 25):
             if (y >= 10 + detectionLine[0][1]) & (cv2.contourArea(cntr) < 35):
                 break
-            '''
-            for Dcntr in dContours:
-                if np.array_equal(Dcntr, cntr):
-                    break
-            '''
+            
             validContours.append(cntr)
 
     #Next iterate through contours to make sure none are inside of eachother
@@ -80,7 +77,53 @@ def getValidContours (contours, detectionLine, dContours):
     
     validContours = validContoursCopy
     
-    return validContours        
+    return validContours      
+
+    
+'''
+Finds very similar bounding rectangles. Used here to compare rectangles from one frame ago 
+with current rectangles. In this way, a vehicle's general direction and speed may be computed.
+'''
+def findRelatedRects(curr_rects, past_rects):
+    
+    '''
+    IMPORTANT: thresshold is the standard by which rectangles are gauged to be similar.
+    making it higher reduces direction accuracy, but allows it to be displayed more frequently
+    making it lower increases accuracy, but reduces how often direction is displayed.
+    37 is a pretty good balance
+    '''
+    threshhold = 37
+    
+    related_Rect_Ctrs = [None] * (len(curr_rects) * len(past_rects))
+    RR_Dists = [None] * (len(curr_rects) * len(past_rects))
+    i = 0
+    #compare past rects to current ones. If any are close enough, connect em!
+    for P_rect in past_rects:
+        for C_rect in curr_rects:
+            
+            ''' MAYBE use area difference between rectangles to reduce direction error further?
+            #find difference in area between rectangles
+            PR_area = P_rect[2] * P_rect[3]
+            CR_area = C_rect[2] * C_rect[3]
+            area_Diff = abs(PR_area - CR_area)
+            '''
+
+            #find distance between rectangle centers
+            PR_ctr = [P_rect[0] + (P_rect[2]/2), P_rect[1] + (P_rect[3]/2)]
+            CR_ctr = [C_rect[0] + (C_rect[2]/2), C_rect[1] + (C_rect[3]/2)]
+            sumSq = (abs(PR_ctr[0] - CR_ctr[0]) ** 2 ) + ((abs(PR_ctr[1] - CR_ctr[1])) ** 2)
+            dist = math.sqrt(sumSq)
+            
+            #print('dist = ' + str(dist) + ', PA = ' + str(perc_Diff_A) + ', PB = ' + str(perc_Diff_B) + '\n')
+            #print('dist = ' + str(dist) + ' uwu\n')
+            #check whether rectangles are closely related
+            if ((dist < threshhold) & (dist > 0)):
+                related_Rect_Ctrs[i] = [PR_ctr, CR_ctr]
+                RR_Dists[i] = dist
+                i = i + 1
+                #print('found a match uwu\n')
+            
+    return i, related_Rect_Ctrs, RR_Dists
 
 '''
 Method which, given an array of two arrays of contours, returns the average pixel 
@@ -136,11 +179,11 @@ fps = 30.0
 vehicleCounts = []
 vPerSec = 0 # vehicles per second
 frameCount = 1 # number of frames processed
-doneContours = []
 diffContours = [None] * 2 # this  will be used to store two arrays of contours for computing the difference in positions of related contours 
 speedSum = 0 # the sum of vehicle speeds in pixels/second
 avgSpeed = 0 # the average of vehicle speeds in pixels/second
 currSpeed = 0 # the current speed of vehicles in pixels/second
+rects = []
 
 #TODO could maybe first go through and compute average contour size which could be used as a detection threshold?
 while(capture.isOpened()):
@@ -148,16 +191,13 @@ while(capture.isOpened()):
     ret, frame = capture.read()   
     if (ret == True):
         unproFrames.append(frame)
-        if (len(unproFrames) > 121):
+        if (len(unproFrames) > 1):
             #find the contours
             contours = getContours(unproFrames[index], unproFrames[index + 1])
                         
             #grab those only within detection zone
-            validContours = getValidContours(contours, detectionLine, doneContours)
-            '''
-            for cn in validContours:
-                doneContours.append(cn)
-            '''
+            validContours = getValidContours(contours, detectionLine)
+            
             # compute the speed of contours
             diffContours[frameCount % 2] = validContours
             speed = 0
@@ -165,13 +205,19 @@ while(capture.isOpened()):
                 speed = calculateSpeed(diffContours) * fps
                 speedSum += speed
 
-
-            #calculate bounding rectangles
+            #creating a deep copy of old bounding rectangless (needed later)
+            pastRects = copy.deepcopy(rects)
+           
+            #calculate new bounding rectangles
             rects = [None]*len(validContours)
             polys = [None]*len(validContours)
             for i, c in enumerate(validContours):
                 polys[i] = cv2.approxPolyDP(c, 3, True)
                 rects[i] = cv2.boundingRect(polys[i])
+                
+            #find related past/new rectangles
+            num_related, related_Rects, RR_Dists = findRelatedRects(rects, pastRects)
+            
             
             #create copy frame to draw on
             processedFrame = frame.copy()
@@ -185,6 +231,30 @@ while(capture.isOpened()):
             for i in range(len(validContours)):
                 color = (256, 0, 0)
                 cv2.rectangle(processedFrame, (int(rects[i][0]), int(rects[i][1])), (int(rects[i][0]+rects[i][2]), int(rects[i][1]+rects[i][3])), color, 2)
+
+            #add vectors indicating direction to bounding rects (if such a direction was found)
+            for i in range(num_related):                
+                #grab info on related bounding rects
+                pair = related_Rects[i]
+                past_ctr = pair[0]
+                curr_ctr = pair[1]
+                dist = RR_Dists[i]
+                
+                #calculate rounded relative vehicle speed
+                rel_spd = dist * fps
+                rel_spd = round(rel_spd, 2)
+                
+                #find point on line 10 units away from current rect to draw direction
+                Future_dist = dist + 30
+                Dist_ratio = Future_dist/dist
+                future_x = (((1-Dist_ratio)*past_ctr[0]) + (Dist_ratio * curr_ctr[0]))
+                future_y = (((1-Dist_ratio)*past_ctr[1]) + (Dist_ratio * curr_ctr[1]))
+                future_pt = [future_x, future_y]
+                
+                #draw line and speed
+                cv2.line(processedFrame, (int(curr_ctr[0]), int(curr_ctr[1])), (int(future_pt[0]), int(future_pt[1])), (0,0,255), 2)
+                cv2.putText(processedFrame, str(rel_spd), (int(curr_ctr[0]), (int(curr_ctr[1]) - 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+                
 
             #TODO Need to add more data to display for each frame, such as cars per minute which requires some counting and approximation
             vehicleCounts.append(len(validContours))
