@@ -1,8 +1,6 @@
 import cv2
 
 cap = cv2.VideoCapture('japan_intersection.mp4')
-fps = cap.get(cv2.CAP_PROP_FPS)
-print(fps)
 
 object_detector = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=20)
 
@@ -22,7 +20,7 @@ for i in range(frames_to_proc):
     height, width, _ = frame.shape
     # place in video in which to detect vehicles
     #print(height, width)
-    #roi = frame[90:288,0:432]
+    #frame = frame[0:200,0:400]
 
     mask = object_detector.apply(frame)
     _, mask = cv2.threshold(mask, 254, 255, cv2.THRESH_BINARY)
@@ -38,8 +36,11 @@ for i in range(frames_to_proc):
     pro_frames.append(frame)
 
     #cv2.imshow("roi", roi)  
-    #cv2.imshow("frame", frame)
+    cv2.imshow("frame", frame)
     #cv2.imshow("mask", mask)
+    key = cv2.waitKey(30)
+    if key == 27:
+        break
 
 cap.release()
 cv2.destroyAllWindows()
