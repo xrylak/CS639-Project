@@ -187,11 +187,11 @@ while(capture.isOpened()):
     test_frames -= 1
     # Capture frame-by-frame
     ret, frame = capture.read()  
-    if (ret == True):
+    if (ret == True and test_frames > 0):
         # Scale down size of input video
         frame = rescale_frame(frame)
         unproFrames.append(frame)
-        if (len(unproFrames) > 1 and test_frames > 0):
+        if (len(unproFrames) > 1):
             #find the contours
             contours = getContours(unproFrames[index], unproFrames[index + 1])
             
@@ -288,11 +288,11 @@ while(capture.isOpened()):
                 cv2.line(processedFrame, directionLine[0],directionLine[1],(100, 255, 255))
 
             proFrames.append(processedFrame)
-            # cv2.imshow("frame", processedFrame)
-            # key = cv2.waitKey(30)
-            # if key == 27:
-            #     break
-            # frameCount += 1
+            cv2.imshow("frame", processedFrame)
+            key = cv2.waitKey(30)
+            if key == 27:
+                break
+            frameCount += 1
            
            
     else:
