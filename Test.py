@@ -14,6 +14,7 @@ def rescale_frame(frame, percent=30):
 pro_frames = []
 frames_to_proc = 2000
 
+# loop through all frames
 for i in range(frames_to_proc):
     ret, frame = cap.read()
     frame = rescale_frame(frame)

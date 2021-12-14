@@ -150,15 +150,16 @@ def calculateSpeed(diffContours):
                 contourMatches += 1
     if (contourMatches > 0):
         averageSpeed /= contourMatches
-               
-
-
-
-       
-
     return averageSpeed
 
-capture = cv2.VideoCapture('florida-paradise.mp4')
+def rescale_frame(frame, percent=30):
+    width = int(frame.shape[1] * percent/100)
+    height = int(frame.shape[0] * percent/ 100)
+    dim = (width, height)
+    return cv2.resize(frame, dim, interpolation =cv2.INTER_AREA)
+
+capture = cv2.VideoCapture('japan_intersection.mp4')
+#capture = cv2.VideoCapture('florida-paradise.mp4')
 
 # Check if camera opened successfully
 if (capture.isOpened()== False):
@@ -168,9 +169,8 @@ if (capture.isOpened()== False):
 unproFrames = [] # unprocessed frames
 proFrames = [] # processed frames
 index = -1 # start at -1 since will be incremented before used
-frameDir = '/'
 detectionLine = (0, 80),(1000,80) # used to validate contours of interest, may change depending on image
-fps = 30.0
+fps = 60.0
 vehicleCounts = []
 vPerSec = 0 # vehicles per second
 frameCount = 1 # number of frames processed
@@ -182,15 +182,22 @@ rects = []
 xCoords = [] # the x coordinates of the contours
 yCoords = [] # the y coordinates of the contours
 
+test_frames = 600
 while(capture.isOpened()):
+    test_frames -= 1
     # Capture frame-by-frame
     ret, frame = capture.read()  
     if (ret == True):
+        # Scale down size of input video
+        frame = rescale_frame(frame)
         unproFrames.append(frame)
-        if (len(unproFrames) > 1):
+        if (len(unproFrames) > 1 and test_frames > 0):
             #find the contours
             contours = getContours(unproFrames[index], unproFrames[index + 1])
-                       
+            
+            # clear old unproFrames to save space
+            unproFrames = [unproFrames[index+1]]
+
             #grab those only within detection zone
             validContours = getValidContours(contours, detectionLine)
            
@@ -275,13 +282,17 @@ while(capture.isOpened()):
             #cv2.line(processedFrame, detectionLine[0],detectionLine[1],(100, 255, 255))
 
             # display average direction line (best fit line)
-            if(frameCount > 1):
+            if(frameCount > 1 and len(xCoords) > 0 and len(yCoords) > 0):
                 a, b = np.polyfit(xCoords,yCoords,1)
                 directionLine = (0, int(b)),(1000, int((1000*a)+b))
                 cv2.line(processedFrame, directionLine[0],directionLine[1],(100, 255, 255))
 
             proFrames.append(processedFrame)
-            frameCount += 1
+            # cv2.imshow("frame", processedFrame)
+            # key = cv2.waitKey(30)
+            # if key == 27:
+            #     break
+            # frameCount += 1
            
            
     else:
