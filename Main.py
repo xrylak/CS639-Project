@@ -28,22 +28,26 @@ def getContours(image1, image2):
     dilated = cv2.dilate(thresh,kernel,iterations = 1)
        
     # find contours
-    contours, hierarchy = cv2.findContours(dilated.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    contours, hierarchy = cv2.findContours(dilated.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return contours
 
 '''
 Method which cuts out the contours that do not appear in the detection area
-TODO maybe pass in contour area instead? May need to change depending on image
 '''
-def getValidContours (contours, detectionLine):
+def getValidContours (contours, detectionArea):
     validContours = []
     for cntr in contours:
         x,y,w,h = cv2.boundingRect(cntr)
-        if (x <= detectionLine[1][0] - 40) & (y >= detectionLine[1][1]) & (cv2.contourArea(cntr) >= 25):
-            if (y >= 10 + detectionLine[0][1]) & (cv2.contourArea(cntr) < 35):
-                break
-            
+        if (y >= ((detectionArea[1][1]-detectionArea[0][1])/(detectionArea[1][0]-detectionArea[0][0]))*(x-detectionArea[0][0])+detectionArea[0][1] and \
+        y >= ((detectionArea[3][1]-detectionArea[1][1])/(detectionArea[3][0]-detectionArea[1][0]))*(x-detectionArea[1][0])+detectionArea[1][1] and \
+        y >= ((detectionArea[2][1]-detectionArea[3][1])/(detectionArea[2][0]-detectionArea[3][0]))*(x-detectionArea[3][0])+detectionArea[3][1] and \
+        y <= ((detectionArea[0][1]-detectionArea[2][1])/(detectionArea[0][0]-detectionArea[2][0]))*(x-detectionArea[2][0])+detectionArea[2][1]):
             validContours.append(cntr)
+        # if (x <= detectionLine[1][0] - 40) & (y >= detectionLine[1][1]) & (cv2.contourArea(cntr) >= 25):
+        #     if (y >= 10 + detectionLine[0][1]) & (cv2.contourArea(cntr) < 35):
+        #         break
+            
+        #     validContours.append(cntr)
 
     #Next iterate through contours to make sure none are inside of eachother
     validContoursCopy = validContours.copy()
@@ -170,6 +174,8 @@ unproFrames = [] # unprocessed frames
 proFrames = [] # processed frames
 index = -1 # start at -1 since will be incremented before used
 detectionLine = (0, 80),(1000,80) # used to validate contours of interest, may change depending on image
+detectionAreaRoad = [[217, 270], [441,103], [768,530], [767,178]] # vertices of quad area on road to detect valid contours
+detectionAreaCrosswalk = [[]]
 fps = 60.0
 vehicleCounts = []
 vPerSec = 0 # vehicles per second
@@ -182,12 +188,12 @@ rects = []
 xCoords = [] # the x coordinates of the contours
 yCoords = [] # the y coordinates of the contours
 
-test_frames = 600
+
 while(capture.isOpened()):
-    test_frames -= 1
+
     # Capture frame-by-frame
     ret, frame = capture.read()  
-    if (ret == True and test_frames > 0):
+    if (ret == True):
         # Scale down size of input video
         frame = rescale_frame(frame)
         unproFrames.append(frame)
@@ -199,7 +205,7 @@ while(capture.isOpened()):
             unproFrames = [unproFrames[index+1]]
 
             #grab those only within detection zone
-            validContours = getValidContours(contours, detectionLine)
+            validContours = getValidContours(contours, detectionAreaRoad)
            
             # compute the speed of contours
             diffContours[frameCount % 2] = validContours
