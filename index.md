@@ -1,7 +1,8 @@
 # Traffic Livestream Analysis
 Anders Carlsson (awcarlsson@wisc.edu), Fritz Ringler (fringler@wisc.edu), 
 Casey Frank (csfrank3@wisc.edu)
-[Project Presentation](https://www.youtube.com/watch?v=UsxhjWs2Cbw)
+
+# [Project Presentation](https://www.youtube.com/watch?v=UsxhjWs2Cbw)
 ### Problem
   In terms of traffic, connectivity is costly. As cars overburden the streets of the US, our world becomes increasingly congested. Especially in larger cities, where around 90% of daily commuters use private vehicles, policymakers struggle to find tenable solutions (2). One commonly utilized option is physically expanding the capacity of roads, but urban planners are often hard-pressed in finding locations in which to allocate valuable resources into roads, but the construction required is often unrealistically costly in terms of both resources and money. Additionally, these massive roads would be grossly unnecessary during non-peak traffic hours, and once word got around that the road had expanded, people would flood in, and congestion would re-appear. This dilemma hints at the true problem, of which congestion is only a symptom. The true problem is the fact that the majority of people commute using specific roads at specific times of the day, colloquially known as “rush hours”.
 ### Why It Needs to be Solved
