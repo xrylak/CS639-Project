@@ -18,8 +18,15 @@ Casey Frank (csfrank3@wisc.edu)
   
 ### Step 1: Frame Differencing
   The first step is frame differencing. We find the difference in pixel values between two consecutive frames which correspond to a moving object.
-  ![Frame1](./pictures/car1.png)
-  ![Frame2](./pictures/car2.png)
+
+  | ![](./pictures/car1.png) |
+  |:--:| 
+  | *frame1* |
+
+  | ![](./pictures/car2.png) |
+  |:--:| 
+  | *frame2* |
+
 
 ### Step 3: Image Thresholding
   The second step is thresholding, which involves assigning a 1 to values above the threshold in the frame differenced image, and 0 to values below the threshold. This helps to weed out some of the unwanted noise in the image.
