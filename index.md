@@ -60,11 +60,13 @@ Casey Frank (csfrank3@wisc.edu)
   |:--:| 
   | *After processing* |
 
-## Results and shortcomings
+## Results
   The results of our algorithm were promising. The resulting video outputs were able to accurately estimate the average direction of traffic flow as well as traffic density. Vehicles were usually detected, and their individual directions and velocities were usually accurate as well. However, there is room for improvement. Since the video analysis takes place on a frame-by-frame basis, there are frames in which vehicles may not be detected, or their direction vector/speed is slightly innaccurate. Additionally, since we detect objects based solely on motion, cars can occasionally come close to one another, and be detected as one, rather than two, vehicles.
 
-## Revisions
-  Originally the project was going to deal with multiple live streams of traffic feed on a large scale but has been skimmed down to just working with individual videos/live streams with a focus on gathering information from individual traffic videos and displaying the information in an output video.  If time allows, we will implement a way to capture data from a livestream over hour/day long periods and extract traffic data, such as traffic density over time. Some of the complicated data analysis methods mentioned before such as determining actual car velocities have been removed. The timeline has also been updated to be in agreement with the new changes and current progress.
+## [Video of Result](https://youtu.be/MoZNlUHX5wA)
+
+## Revisions and Difficulties
+  Originally the project was going to deal with multiple live streams of traffic feed on a large scale but has been skimmed down to just working with individual videos/live streams with a focus on gathering information from individual traffic videos and displaying the information in an output video. One of the main challenges we faced was finding suitable livestreams for which to test on.
 
 ## Future Directions
   There are many different routes we could go down to expand on this project. The first direction to be pursued would need to be analysis of the geometry of a scene in relation to the cameras position. In doing so, the true velocity of cars could be estimated in a metric more useful than pixels/second. A more optimistic future expansion could be attaching this algorithm to multiple different cameras throughout a given city located at particularly busy intersections and stretches of road. The aggregated data from these live streams could be used to create live heat maps of traffic over time, and might help individuals identify better routes/times to use for commutes, as well as help urban planners identify choke points. We experimented with pedestrian flow analysis, where, similar to traffic flow, the aggregated movement data of pedestrians in big cities is collected, which could also be beneficial for city design and for crowd control purposes. This could also be applied to analyze line movement, such as predicting the wait time for a drive through restaurant or for a queue at an amusement park ride.
@@ -73,4 +75,5 @@ Casey Frank (csfrank3@wisc.edu)
 1. https://www.theatlantic.com/sponsored/hitachi-building-tomorrow/global-rush-hour/237/
 2. https://www.brookings.edu/research/traffic-why-its-getting-worse-what-government-can-do/
 3. https://www.triplepundit.com/story/2017/health-impacts-rush-hour-pollution/16231
-4. https://www.analyticsvidhya.com/blog/2020/04/vehicle-detection-opencv-python/
+4. https://www.technoarete.org/common_abstract/pdf/IJERCSE/v5/i3/Ext_57402.pdf
+5. https://www.analyticsvidhya.com/blog/2020/04/vehicle-detection-opencv-python/
