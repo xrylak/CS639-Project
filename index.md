@@ -52,6 +52,10 @@ Casey Frank (csfrank3@wisc.edu)
 
 ### Step 4: Further Contour Cleaning
   The fourth step involves more weeding out of unwanted contours. Contours which are too small compared to a threshold are removed. We also ignore contours outside of our area of interest: for example, we are only interested in contours in the area outlined by the red below.
+
+  | ![](./pictures/roi.png) |
+  |:--:| 
+  | *Regions of interest* |
   
 ### Step 5: Record Data and Add to Processed Frame
   Following this comes the data representation where velocities, direction, bounding boxes, and cars per duration of time is calculated, stored, and displayed on the processed frame. Finally, the frame is saved and this algorithm continues until each frame has been processed. The processed frames are then converted to a mp4 video and saved for viewing.
