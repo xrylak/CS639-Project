@@ -28,27 +28,36 @@ Casey Frank (csfrank3@wisc.edu)
   | *frame2* |
 
 
-### Step 3: Image Thresholding
+### Step 2: Image Thresholding
   The second step is thresholding, which involves assigning a 1 to values above the threshold in the frame differenced image, and 0 to values below the threshold. This helps to weed out some of the unwanted noise in the image.
   
-### Step 3: Finding Contours
-  Next we find
+  | ![](./pictures/car1.png) |
+  |:--:| 
+  | *frame1* |
 
-### Step 4: Contour Dilation
-  The fourth step is finding the contours and dilating them.  Contours help identify regions in an image having the same intensity or color, while dilation, done via convolution with a kernel, helps connect any contours which are close enough to be considered a single one by expanding their area.
+  | ![](./pictures/car2.png) |
+  |:--:| 
+  | *frame2* |
 
-### Step 5: Further Contour Cleaning
-  The fifth step involves more weeding out of unwanted contours. Contours which are too small compared to a threshold are removed and a line is also drawn across the image to remove any cars which are not beneath it.  The area beneath the line is the region of interest.  This filtering method may be removed since it varies greatly between images. 
+### Step 3: Find Contours and Dilate
+  The third step is finding the contours and dilating them. Contours help identify regions in an image having the same intensity or color, while dilation, done via convolution with a kernel, helps connect any contours which are close enough to be considered a single one by expanding their area.
+
+
+
+### Step 4: Further Contour Cleaning
+  The fourth step involves more weeding out of unwanted contours. Contours which are too small compared to a threshold are removed and a line is also drawn across the image to remove any cars which are not beneath it.  The area beneath the line is the region of interest.  This filtering method may be removed since it varies greatly between images. 
   
-### Step 6: Record Data and Add to Processed Frame
+### Step 5: Record Data and Add to Processed Frame
   Following this comes the data representation where velocities, direction, bounding boxes, and cars per duration of time is calculated and displayed on the processed frame.  Finally, the frame is saved and this algorithm continues until each frame has been processed.  The processed frames are then converted to a mp4 video and saved for viewing.
-  Much of this algorithm is based on the article from Analytics Vidhya on vehicle recognition with openCV (reference 4).
+
+## Results and shortcomings
+  The results of our algorithm were promising. The resulting video outputs were able to accurately estimate the average direction of traffic flow as well as traffic density. Vehicles were usually detected, and their individual directions and velocities were usually accurate as well. However, there is room for improvement. Since the video analysis takes place on a frame-by-frame basis, there are frames in which vehicles may not be detected, or their direction vector/speed is slightly innaccurate. Additionally, since we detect objects based solely on motion, cars can occasionally come close to one another, and be detected as one, rather than two, vehicles.
 
 ## Revisions
   Originally the project was going to deal with multiple live streams of traffic feed on a large scale but has been skimmed down to just working with individual videos/live streams with a focus on gathering information from individual traffic videos and displaying the information in an output video.  If time allows, we will implement a way to capture data from a livestream over hour/day long periods and extract traffic data, such as traffic density over time. Some of the complicated data analysis methods mentioned before such as determining actual car velocities have been removed. The timeline has also been updated to be in agreement with the new changes and current progress.
 
 ## Future Directions
-  There are many different routes we could go down to expand on this project. A potential use case could be attaching this algorithm to multiple different cameras throughout a given city located at particularly busy intersections and stretches of road. The aggregated data from these live streams could be used to create live heat maps of traffic over time, and might help urban planners identify choke points at which the infrastructure could be improved. We experimented with pedestrian flow analysis, where, similar to traffic flow, the aggregated movement data of pedestrians in big cities is collected, which could also be beneficial for city design and for crowd control purposes. This could also be applied to analyze line movement, such as predicting the wait time for a drive through restaurant or for a queue at an amusement park ride.
+  There are many different routes we could go down to expand on this project. The first direction to be pursued would need to be analysis of the geometry of a scene in relation to the cameras position. In doing so, the true velocity of cars could be estimated in a metric more useful than pixels/second. A more optimistic future expansion could be attaching this algorithm to multiple different cameras throughout a given city located at particularly busy intersections and stretches of road. The aggregated data from these live streams could be used to create live heat maps of traffic over time, and might help individuals identify better routes/times to use for commutes, as well as help urban planners identify choke points. We experimented with pedestrian flow analysis, where, similar to traffic flow, the aggregated movement data of pedestrians in big cities is collected, which could also be beneficial for city design and for crowd control purposes. This could also be applied to analyze line movement, such as predicting the wait time for a drive through restaurant or for a queue at an amusement park ride.
 
 ## Sources
 1. https://www.theatlantic.com/sponsored/hitachi-building-tomorrow/global-rush-hour/237/
